@@ -52,8 +52,7 @@ func (uc *userController) Register(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-
-	c.JSON(http.StatusOK, gin.H{"hash": hashedPassword})
+	c.JSON(http.StatusCreated, gin.H{"message": "User registered successfully"})
 }
 
 // Login recebe um input JSON através do gin.Context e tenta realizar o login do usuário.
