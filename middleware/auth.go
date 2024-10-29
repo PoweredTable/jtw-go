@@ -25,22 +25,24 @@ func JWTAuthMiddleware(c *gin.Context) {
 	}
 
 	c.Set("userID", claims.Issuer)
+	c.Set("role", claims.Subject)
 	c.Next()
 }
 
-func RoleRequired(role string) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		claims, exists := c.Get("userID") // or another key if you change it
-		if !exists {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
-			c.Abort()
-			return
-		}
-		if claims.(*jwt.RegisteredClaims).Subject != role {
-			c.JSON(http.StatusForbidden, gin.H{"error": "Access denied"})
-			c.Abort()
-			return
-		}
-		c.Next()
+// RoleRequired verifica se o usuário possui a role necessária.
+func RoleRequired(role string, c *gin.Context) {
+	// Adquire a role direto do contexto e verifica se existe
+	userRole, exists := c.Get("role")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		c.Abort()
+		return
 	}
+	// Compara a role do usuário logado com a role exigida
+	if userRole != role {
+		c.JSON(http.StatusForbidden, gin.H{"error": "Access denied"})
+		c.Abort()
+		return
+	}
+	c.Next()
 }

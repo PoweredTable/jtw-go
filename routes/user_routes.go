@@ -16,6 +16,9 @@ func RegisterUserRoutes(rg *gin.RouterGroup) {
 
 	rg.POST("/login", userController.Login)
 
-	rg.POST("/register", middleware.JWTAuthMiddleware, userController.Register)
-	// TODO: Implement middleware.RoleRequired for admin only
+	rg.POST("/register",
+		middleware.JWTAuthMiddleware,
+		func(c *gin.Context) { middleware.RoleRequired("admin", c) },
+		userController.Register,
+	)
 }
