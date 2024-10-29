@@ -7,6 +7,7 @@ import (
 	"log"
 )
 
+// CreateDB cria uma conexão com o banco de dados utilizando o DSN.
 func CreateDB(dsn string) (*sql.DB, error) {
 	db, err := sql.Open("postgres", dsn)
 	if err != nil {

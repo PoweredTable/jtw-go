@@ -8,6 +8,7 @@ import (
 
 var DB *sql.DB
 
+// InitDB inicializa a conexão com o banco de dados.
 func InitDB() {
 	if DbDSN == "" {
 		log.Fatal("DB_DSN environment variable not set")

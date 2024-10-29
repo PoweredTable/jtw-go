@@ -10,10 +10,10 @@ import (
 func init() {
 	initializers.LoadEnv()
 	initializers.InitDB()
-
 }
 
 func main() {
+	// Fecha a conexão com o banco assim que encerrar.
 	defer initializers.DB.Close()
 
 	r := gin.Default()
